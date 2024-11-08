@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:ani_verse/models/anime_info.dart';
+import 'package:ani_verse/models/anime_recommendations.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/anime_seasons.dart';
@@ -29,6 +31,7 @@ abstract class AnimeApi {
   Future<AnimeSeason> getCurrentAnimeSeason(int page);
   Future<AnimeSeason> getAnimeSeason(int year, Season animeSeason, int page);
   Future<AnimeInfo> getAnimeById(int id);
+  Future<AnimeRecommendations> getAnimeRecommendations(int id);
 }
 
 
@@ -74,5 +77,10 @@ class JikanApi implements AnimeApi {
         .then<AnimeInfo>((body) {
       return AnimeInfo.fromJson(jsonDecode(body));
     });
+  }
+
+  @override
+  Future<AnimeRecommendations> getAnimeRecommendations(int id) {
+    throw UnimplementedError();
   }
 }
