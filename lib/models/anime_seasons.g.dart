@@ -11,11 +11,11 @@ AnimeSeason _$AnimeSeasonFromJson(Map<String, dynamic> json) => AnimeSeason(
           ? null
           : Pagination.fromJson(json['pagination'] as Map<String, dynamic>),
       data: (json['data'] as List<dynamic>?)
-          ?.map((e) => Datum.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => AnimeInfo.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
-Datum _$DatumFromJson(Map<String, dynamic> json) => Datum(
+AnimeInfo _$DatumFromJson(Map<String, dynamic> json) => AnimeInfo(
       malId: (json['mal_id'] as num?)?.toInt(),
       url: json['url'] as String?,
       images: (json['images'] as Map<String, dynamic>?)?.map(

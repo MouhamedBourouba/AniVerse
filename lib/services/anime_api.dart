@@ -67,4 +67,12 @@ class JikanApi implements AnimeApi {
       return AnimeSeason.fromJson(jsonDecode(body));
     });
   }
+
+  @override
+  Future<AnimeInfo> getAnimeById(int id) {
+    return _request("anime/id/", {"id": id})
+        .then<AnimeInfo>((body) {
+      return AnimeInfo.fromJson(jsonDecode(body));
+    });
+  }
 }

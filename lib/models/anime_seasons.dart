@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-
 part 'anime_seasons.g.dart';
 
 @JsonSerializable(createToJson: false)
@@ -10,15 +9,15 @@ class AnimeSeason {
   });
 
   final Pagination? pagination;
-  final List<Datum>? data;
+  final List<AnimeInfo>? data;
 
   factory AnimeSeason.fromJson(Map<String, dynamic> json) => _$AnimeSeasonFromJson(json);
 
 }
 
 @JsonSerializable(createToJson: false)
-class Datum {
-  Datum({
+class AnimeInfo {
+  AnimeInfo({
     required this.malId,
     required this.url,
     required this.images,
@@ -105,7 +104,7 @@ class Datum {
   final List<Demographic>? themes;
   final List<Demographic>? demographics;
 
-  factory Datum.fromJson(Map<String, dynamic> json) => _$DatumFromJson(json);
+  factory AnimeInfo.fromJson(Map<String, dynamic> json) => _$DatumFromJson(json);
 
 }
 
