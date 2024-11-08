@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'anime_seasons.dart';
+part of 'anime_list.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-AnimeSeason _$AnimeSeasonFromJson(Map<String, dynamic> json) => AnimeSeason(
+AnimeList _$AnimeListFromJson(Map<String, dynamic> json) => AnimeList(
       pagination: json['pagination'] == null
           ? null
           : Pagination.fromJson(json['pagination'] as Map<String, dynamic>),
