@@ -1,7 +1,7 @@
 import 'package:ani_verse/data/models/anime_info.dart';
 import 'package:ani_verse/data/models/anime_list.dart';
 import 'package:ani_verse/data/models/anime_recommendations.dart';
-import 'package:ani_verse/domain/repositorys/result.dart';
+import 'package:ani_verse/domain/result.dart';
 
 enum AnimeSeason {
   winter,

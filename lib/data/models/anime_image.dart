@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'anime_image.g.dart';
 
-@JsonSerializable(createToJson: false)
+@JsonSerializable(createToJson: true)
 class Image {
   Image({
     required this.imageUrl,
@@ -23,7 +23,7 @@ class Image {
 
 }
 
-@JsonSerializable(createToJson: false)
+@JsonSerializable(createToJson: true)
 class Images {
   Images({
     required this.imageUrl,

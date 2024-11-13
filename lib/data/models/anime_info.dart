@@ -4,7 +4,7 @@ import 'anime_image.dart';
 
 part 'anime_info.g.dart';
 
-@JsonSerializable(createToJson: false)
+@JsonSerializable(createToJson: true)
 class AnimeInfo {
   AnimeInfo({
     required this.malId,
@@ -97,7 +97,7 @@ class AnimeInfo {
 
 }
 
-@JsonSerializable(createToJson: false)
+@JsonSerializable(createToJson: true)
 class Aired {
   Aired({
     required this.from,
@@ -115,7 +115,7 @@ class Aired {
 
 }
 
-@JsonSerializable(createToJson: false)
+@JsonSerializable(createToJson: true)
 class Prop {
   Prop({
     required this.from,
@@ -129,7 +129,7 @@ class Prop {
 
 }
 
-@JsonSerializable(createToJson: false)
+@JsonSerializable(createToJson: true)
 class From {
   From({
     required this.day,
@@ -145,7 +145,7 @@ class From {
 
 }
 
-@JsonSerializable(createToJson: false)
+@JsonSerializable(createToJson: true)
 class Broadcast {
   Broadcast({
     required this.day,
@@ -163,7 +163,7 @@ class Broadcast {
 
 }
 
-@JsonSerializable(createToJson: false)
+@JsonSerializable(createToJson: true)
 class Demographic {
   Demographic({
     required this.malId,
@@ -183,7 +183,7 @@ class Demographic {
 }
 
 
-@JsonSerializable(createToJson: false)
+@JsonSerializable(createToJson: true)
 class Title {
   Title({
     required this.type,
@@ -197,7 +197,7 @@ class Title {
 
 }
 
-@JsonSerializable(createToJson: false)
+@JsonSerializable(createToJson: true)
 class Trailer {
   Trailer({
     required this.youtubeId,
@@ -209,11 +209,9 @@ class Trailer {
   @JsonKey(name: 'youtube_id')
   final String? youtubeId;
   final String? url;
-
   @JsonKey(name: 'embed_url')
   final String? embedUrl;
   final Images? images;
 
   factory Trailer.fromJson(Map<String, dynamic> json) => _$TrailerFromJson(json);
-
 }
