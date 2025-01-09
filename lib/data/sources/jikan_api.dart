@@ -1,67 +1,69 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:ani_verse/data/models/anime_info.dart';
 import 'package:ani_verse/data/models/anime_list.dart';
 import 'package:ani_verse/data/models/anime_recommendations.dart';
 import 'package:ani_verse/domain/repositorys/anime_repository.dart';
 import 'package:http/http.dart' as http;
+import 'package:result_dart/result_dart.dart';
 
 class JikanApi {
   final String _base = "api.jikan.moe";
 
-  Future<String> _request(String resPath, [Map<String, dynamic>? prams]) async {
+  Future<Result<String>> _request(String resPath, [Map<String, dynamic>? prams]) async {
     final url = Uri.https(_base, "v4/$resPath", prams);
     try {
       final response = await http.get(url);
 
-      if(response.statusCode == 200) {
-        return response.body;
+      if (response.statusCode == 200) {
+        return Success(response.body);
+      } else {
+        return Exception("Error Code: ${response.statusCode}, ${response.reasonPhrase}").toFailure();
       }
-
-      else {
-        return Future.error("Error Code: ${response.statusCode}, ${response.reasonPhrase}");
-      }
-    } catch(e) {
-      return Future.error(e);
+    } catch (e) {
+      return e is HttpException ? e.toFailure() : Exception("Unknown error try again later").toFailure();
     }
   }
 
-  Future<AnimeList> getAnimeSeason(int year, AnimeSeason animeSeason, [int? page]) {
+  Future<Result<AnimeList>> getAnimeSeason(int year, AnimeSeason animeSeason, [int? page]) {
     return _request("seasons/$year/${animeSeason.toString()}", {"page": page.toString(), "sfw": ""})
-        .then<AnimeList>((body) {
-      return AnimeList.fromJson(jsonDecode(body));
+        .then<Result<AnimeList>>((body) {
+      return body.fold((data) => Success(AnimeList.fromJson(jsonDecode(data))), (error) => error.toFailure());
     });
   }
 
-  Future<AnimeList> getCurrentAnimeSeason([int? page]) {
-    return _request("seasons/now", {"page": page.toString(), "sfw": ""})
-        .then<AnimeList>((body) {
-      return AnimeList.fromJson(jsonDecode(body));
+  Future<Result<AnimeList>> getCurrentAnimeSeason([int? page]) {
+    return _request("seasons/now", {"page": page.toString(), "sfw": ""}).then<Result<AnimeList>>((body) {
+      return body.fold((data) => Success(AnimeList.fromJson(jsonDecode(data))), (error) => error.toFailure());
     });
   }
 
-  Future<AnimeInfo> getAnimeById(int id) {
-    return _request("anime/$id")
-        .then<AnimeInfo>((body) {
-      return AnimeInfo.fromJson(jsonDecode(body));
+  Future<Result<AnimeInfo>> getAnimeById(int id) {
+    return _request("anime/$id").then<Result<AnimeInfo>>((body) {
+      return body.fold((data) => Success(AnimeInfo.fromJson(jsonDecode(data))), (error) => error.toFailure());
     });
   }
 
-  Future<AnimeRecommendations> getAnimeRecommendations(int id) {
-    return _request("anime/$id/recommendations")
-        .then<AnimeRecommendations>((body) {
-      return AnimeRecommendations.fromJson(jsonDecode(body));
+  Future<Result<AnimeRecommendations>> getAnimeRecommendations(int id) {
+    return _request("anime/$id/recommendations").then<Result<AnimeRecommendations>>((body) {
+      return body.fold(
+          (data) => Success(AnimeRecommendations.fromJson(jsonDecode(data))), (error) => error.toFailure());
     });
   }
 
-  Future<AnimeList> getAnimeSearch({String? query,
-    int? page, AnimeType? type,
-    int? minScore, int? maxScore,
-    AnimeStatus? status, AnimeOrderBy? orderBy,
-    String? startLetter, String? startDate,
-    String? endDate}) {
-
-    final props = <String, String>{ "sfw": "" };
+  Future<Result<AnimeList>> getAnimeSearch(
+      {String? query,
+      int? page,
+      AnimeType? type,
+      int? minScore,
+      int? maxScore,
+      AnimeStatus? status,
+      AnimeOrderBy? orderBy,
+      String? startLetter,
+      String? startDate,
+      String? endDate}) {
+    final props = <String, String>{"sfw": ""};
     if (query != null) props['q'] = query;
     if (page != null) props['page'] = page.toString();
     if (type != null) props['type'] = type.toString();
@@ -73,9 +75,8 @@ class JikanApi {
     if (startDate != null) props['startDate'] = startDate;
     if (endDate != null) props['endDate'] = endDate;
 
-    return _request("anime", props)
-        .then<AnimeList>((body) {
-      return AnimeList.fromJson(jsonDecode(body));
+    return _request("anime", props).then<Result<AnimeList>>((body) {
+      return body.fold((data) => Success(AnimeList.fromJson(jsonDecode(data))), (error) => error.toFailure());
     });
   }
 }

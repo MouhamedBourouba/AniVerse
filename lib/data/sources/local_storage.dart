@@ -1,7 +1,7 @@
 import 'package:ani_verse/data/models/anime_info.dart';
 import 'package:ani_verse/data/models/anime_list.dart';
 import 'package:ani_verse/domain/repositorys/anime_repository.dart';
-import 'package:ani_verse/domain/repositorys/result.dart';
+import 'package:result_dart/result_dart.dart';
 
 class LocalStorage {
   Future<void> saveAnimeInfo(AnimeInfo anime) async {
@@ -18,6 +18,6 @@ class LocalStorage {
   }
 
   Future<Result<AnimeInfo>> getAnimeById() async {
-    return Error("Local Storage not implemented");
+    return Exception("Local Storage not implemented").toFailure();
   }
 }
