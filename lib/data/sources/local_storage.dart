@@ -1,6 +1,6 @@
 import 'package:ani_verse/data/models/anime_info.dart';
 import 'package:ani_verse/data/models/anime_list.dart';
-import 'package:ani_verse/domain/repositorys/anime_repository.dart';
+import 'package:ani_verse/domain/repository/anime_repository.dart';
 import 'package:result_dart/result_dart.dart';
 
 class LocalStorage {
