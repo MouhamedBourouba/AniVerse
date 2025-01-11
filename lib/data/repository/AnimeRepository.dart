@@ -10,18 +10,21 @@ import 'package:result_dart/result_dart.dart';
 class AnimeRepositoryImpl implements AnimeRepository {
   AnimeRepositoryImpl();
 
+  Result<AnimeList>? currentSession;
+
   @override
   Future<Result<AnimeInfo>> getAnimeById(int id) {
     return JikanApi.request("anime/$id").then<Result<AnimeInfo>>((body) {
-      return body.fold((data) => Success(AnimeInfo.fromJson(jsonDecode(data))), (error) => error.toFailure());
+      return body.fold(
+          (data) => Success(AnimeInfo.fromJson(jsonDecode(data))), (error) => error.toFailure());
     });
   }
 
   @override
   Future<Result<AnimeRecommendations>> getAnimeRecommendations(int id) {
     return JikanApi.request("anime/$id/recommendations").then<Result<AnimeRecommendations>>((body) {
-      return body.fold(
-          (data) => Success(AnimeRecommendations.fromJson(jsonDecode(data))), (error) => error.toFailure());
+      return body.fold((data) => Success(AnimeRecommendations.fromJson(jsonDecode(data))),
+          (error) => error.toFailure());
     });
   }
 
@@ -50,22 +53,33 @@ class AnimeRepositoryImpl implements AnimeRepository {
     if (endDate != null) props['endDate'] = endDate;
 
     return JikanApi.request("anime", props).then<Result<AnimeList>>((body) {
-      return body.fold((data) => Success(AnimeList.fromJson(jsonDecode(data))), (error) => error.toFailure());
+      return body.fold(
+          (data) => Success(AnimeList.fromJson(jsonDecode(data))), (error) => error.toFailure());
     });
   }
 
   @override
   Future<Result<AnimeList>> getAnimeSeason(int year, AnimeSeason animeSeason, [int? page]) {
-    return JikanApi.request("seasons/$year/${animeSeason.toString()}", {"page": page.toString(), "sfw": ""})
+    return JikanApi.request(
+            "seasons/$year/${animeSeason.toString()}", {"page": page.toString(), "sfw": ""})
         .then<Result<AnimeList>>((body) {
-      return body.fold((data) => Success(AnimeList.fromJson(jsonDecode(data))), (error) => error.toFailure());
+      return body.fold(
+          (data) => Success(AnimeList.fromJson(jsonDecode(data))), (error) => error.toFailure());
     });
   }
 
   @override
-  Future<Result<AnimeList>> getCurrentAnimeSeason([int? page]) {
-    return JikanApi.request("seasons/now", {"page": page.toString(), "sfw": ""}).then<Result<AnimeList>>((body) {
-      return body.fold((data) => Success(AnimeList.fromJson(jsonDecode(data))), (error) => error.toFailure());
+  Future<Result<AnimeList>> getCurrentAnimeSeason([int? page, bool? forceOnline]) {
+    if (currentSession != null && currentSession!.isSuccess() && !(forceOnline ?? false)) {
+      return currentSession!.toAsyncResult();
+    }
+    return JikanApi.request("seasons/now", {"page": page ?? "1", "sfw": ""})
+        .then<Result<AnimeList>>((body) {
+      return body.fold((data) {
+        final animeList = AnimeList.fromJson(jsonDecode(data));
+        currentSession = animeList.toSuccess();
+        return animeList.toSuccess();
+      }, (error) => error.toFailure());
     });
   }
 }
