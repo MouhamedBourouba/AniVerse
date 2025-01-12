@@ -1,6 +1,6 @@
 import 'package:ani_verse/data/models/anime_list.dart';
-import 'package:ani_verse/data/repository/AnimeRepository.dart';
-import 'package:ani_verse/data/repository/SettingsRepository.dart';
+import 'package:ani_verse/data/repository/anime_repository.dart';
+import 'package:ani_verse/data/repository/settings_repository.dart';
 import 'package:ani_verse/domain/repository/anime_repository.dart';
 import 'package:ani_verse/domain/repository/settings_repository.dart';
 import 'package:ani_verse/utils.dart';
@@ -55,7 +55,7 @@ class AnimeFeedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isRow = context.watch<SettingsProvider>().getAnimeFeedStyle() == AnimeFeedStyle.row;
-    final anime_repository = context.read<AnimeRepository>();
+    final animeRepository = context.read<AnimeRepository>();
 
     return Scaffold(
       drawer: const Drawer(
@@ -78,7 +78,7 @@ class AnimeFeedScreen extends StatelessWidget {
         ],
       ),
       body: FutureBuilder(
-          future: anime_repository.getCurrentAnimeSeason(),
+          future: animeRepository.getCurrentAnimeSeason(),
           builder: (context, snap) {
             if (snap.connectionState == ConnectionState.waiting) {
               return const DelayedWidget(
@@ -101,7 +101,7 @@ class AnimeFeedRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text("Rowwwww"));
+    return const Center(child: Text("Rowwwww"));
   }
 }
 
@@ -112,7 +112,7 @@ class AnimeFeedGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text("GRIDDDD"));
+    return const Center(child: Text("GRIDDDD"));
   }
 }
 
@@ -143,15 +143,10 @@ class _DelayedWidgetState extends State<DelayedWidget> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(
-        widget.delay,
-        () => setState(() {
-              _isVisible = true;
-            }));
+    // Make sure widget is still mounted before calling setState
+    Future.delayed(widget.delay, () => {if (mounted) setState(() => _isVisible = true)});
   }
 
   @override
-  Widget build(BuildContext context) {
-    return _isVisible ? widget.child : const SizedBox.shrink();
-  }
+  Widget build(BuildContext context) => Visibility(visible: _isVisible, child: widget.child);
 }
