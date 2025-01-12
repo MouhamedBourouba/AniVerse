@@ -10,8 +10,6 @@ import 'package:result_dart/result_dart.dart';
 class AnimeRepositoryImpl implements AnimeRepository {
   AnimeRepositoryImpl();
 
-  Result<AnimeList>? currentSession;
-
   @override
   Future<Result<AnimeInfo>> getAnimeById(int id) {
     return JikanApi.request("anime/$id").then<Result<AnimeInfo>>((body) {
@@ -70,16 +68,9 @@ class AnimeRepositoryImpl implements AnimeRepository {
 
   @override
   Future<Result<AnimeList>> getCurrentAnimeSeason([int? page, bool? forceOnline]) {
-    if (currentSession != null && currentSession!.isSuccess() && !(forceOnline ?? false)) {
-      return currentSession!.toAsyncResult();
-    }
     return JikanApi.request("seasons/now", {"page": page ?? "1", "sfw": ""})
         .then<Result<AnimeList>>((body) {
-      return body.fold((data) {
-        final animeList = AnimeList.fromJson(jsonDecode(data));
-        currentSession = animeList.toSuccess();
-        return animeList.toSuccess();
-      }, (error) => error.toFailure());
+      return body.fold((data) => AnimeList.fromJson(jsonDecode(data)).toSuccess(), (error) => error.toFailure());
     });
   }
 }

@@ -6,6 +6,7 @@ import 'package:ani_verse/domain/repository/settings_repository.dart';
 import 'package:ani_verse/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:result_dart/result_dart.dart';
 
 import 'app_colors.dart';
 
@@ -49,13 +50,24 @@ class AniVerse extends StatelessWidget {
   }
 }
 
-class AnimeFeedScreen extends StatelessWidget {
+class AnimeFeedScreen extends StatefulWidget {
   const AnimeFeedScreen({super.key});
+
+  @override
+  State<AnimeFeedScreen> createState() => _AnimeFeedScreenState();
+}
+
+class _AnimeFeedScreenState extends State<AnimeFeedScreen> {
+  late final Future<Result<AnimeList>> _getCurrentAnimeSession;
+  @override
+  void initState() {
+    _getCurrentAnimeSession = context.read<AnimeRepository>().getCurrentAnimeSeason();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final isRow = context.watch<SettingsProvider>().getAnimeFeedStyle() == AnimeFeedStyle.row;
-    final animeRepository = context.read<AnimeRepository>();
 
     return Scaffold(
       drawer: const Drawer(
@@ -78,12 +90,10 @@ class AnimeFeedScreen extends StatelessWidget {
         ],
       ),
       body: FutureBuilder(
-          future: animeRepository.getCurrentAnimeSeason(),
+          future: _getCurrentAnimeSession,
           builder: (context, snap) {
             if (snap.connectionState == ConnectionState.waiting) {
-              return const DelayedWidget(
-                  delay: Duration(milliseconds: 500),
-                  child: Center(child: CircularProgressIndicator()));
+              return const Center(child: CircularProgressIndicator());
             } else {
               return snap.data!.fold(
                   (data) => isRow ? AnimeFeedRow(animeList: data) : AnimeFeedGrid(animeList: data),
@@ -125,28 +135,4 @@ class SearchScreen extends StatelessWidget {
       appBar: AppBar(),
     );
   }
-}
-
-class DelayedWidget extends StatefulWidget {
-  final Widget child;
-  final Duration delay;
-
-  const DelayedWidget({super.key, required this.child, required this.delay});
-
-  @override
-  State<DelayedWidget> createState() => _DelayedWidgetState();
-}
-
-class _DelayedWidgetState extends State<DelayedWidget> {
-  bool _isVisible = false;
-
-  @override
-  void initState() {
-    super.initState();
-    // Make sure widget is still mounted before calling setState
-    Future.delayed(widget.delay, () => {if (mounted) setState(() => _isVisible = true)});
-  }
-
-  @override
-  Widget build(BuildContext context) => Visibility(visible: _isVisible, child: widget.child);
 }
