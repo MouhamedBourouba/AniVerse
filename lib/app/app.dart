@@ -126,7 +126,10 @@ class AnimeListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: _animeList.data?.length ?? 0,
-      itemBuilder: (context, index) => SizedBox(height: 200, child: AnimeListTile(_animeList.data![index])),
+      itemBuilder: (context, index) => SizedBox(height: 200, child: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: AnimeListTile(_animeList.data![index]),
+      )),
     );
   }
 }
@@ -140,9 +143,12 @@ class AnimeGridView extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 250, childAspectRatio: 0.5),
+          maxCrossAxisExtent: 250, childAspectRatio: 0.6),
       itemCount: _animeList.data?.length ?? 0,
-      itemBuilder: (BuildContext context, int index) => AnimeCard(_animeList.data![index]),
+      itemBuilder: (BuildContext context, int index) => Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: AnimeCard(_animeList.data![index]),
+      ),
     );
   }
 }
