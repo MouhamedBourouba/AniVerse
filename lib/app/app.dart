@@ -1,3 +1,4 @@
+import 'package:ani_verse/data/models/anime_info.dart';
 import 'package:ani_verse/data/models/anime_list.dart';
 import 'package:ani_verse/data/repository/anime_repository.dart';
 import 'package:ani_verse/data/repository/settings_repository.dart';
@@ -59,6 +60,7 @@ class AnimeFeedScreen extends StatefulWidget {
 
 class _AnimeFeedScreenState extends State<AnimeFeedScreen> {
   late final Future<Result<AnimeList>> _getCurrentAnimeSession;
+
   @override
   void initState() {
     _getCurrentAnimeSession = context.read<AnimeRepository>().getCurrentAnimeSeason();
@@ -96,7 +98,8 @@ class _AnimeFeedScreenState extends State<AnimeFeedScreen> {
               return const Center(child: CircularProgressIndicator());
             } else {
               return snap.data!.fold(
-                  (data) => isRow ? AnimeFeedRow(animeList: data) : AnimeFeedGrid(animeList: data),
+                  (data) => isRow ? AnimeListView(data) : AnimeGridView(data),
+                  // TODO: better error messages
                   (error) => Center(child: Text(error.getErrorMessage())));
             }
           }),
@@ -115,14 +118,53 @@ class AnimeFeedRow extends StatelessWidget {
   }
 }
 
-class AnimeFeedGrid extends StatelessWidget {
-  final AnimeList animeList;
-
-  const AnimeFeedGrid({super.key, required this.animeList});
+class AnimeListView extends StatelessWidget {
+  final AnimeList _animeList;
+  const AnimeListView(this._animeList, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text("GRIDDDD"));
+    return ListView.builder(
+      itemCount: _animeList.data?.length ?? 0,
+      itemBuilder: (context, index) => SizedBox(height: 200, child: AnimeListTile(_animeList.data![index])),
+    );
+  }
+}
+
+class AnimeGridView extends StatelessWidget {
+  final AnimeList _animeList;
+
+  const AnimeGridView(this._animeList, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 250, childAspectRatio: 0.5),
+      itemCount: _animeList.data?.length ?? 0,
+      itemBuilder: (BuildContext context, int index) => AnimeCard(_animeList.data![index]),
+    );
+  }
+}
+
+class AnimeListTile extends StatelessWidget {
+  final AnimeInfo animeInfo;
+  const AnimeListTile(this.animeInfo, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}
+
+class AnimeCard extends StatelessWidget {
+  final AnimeInfo animeInfo;
+
+  const AnimeCard(this.animeInfo, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 }
 
