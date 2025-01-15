@@ -7,6 +7,8 @@ import 'package:ani_verse/data/sources/jikan_api.dart';
 import 'package:ani_verse/domain/repository/anime_repository.dart';
 import 'package:result_dart/result_dart.dart';
 
+import '../../app/enums.dart';
+
 class AnimeRepositoryImpl implements AnimeRepository {
   AnimeRepositoryImpl();
 
