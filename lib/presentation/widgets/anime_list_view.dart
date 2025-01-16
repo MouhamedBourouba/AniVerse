@@ -10,14 +10,18 @@ class AnimeListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return GridView.builder(
+      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+        maxCrossAxisExtent: 650,
+        mainAxisExtent: 250,
+        mainAxisSpacing: 8,
+        crossAxisSpacing: 8,
+      ),
       itemCount: _animeList.data?.length ?? 0,
-      itemBuilder: (context, index) => SizedBox(
-          height: 260,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 16),
-            child: AnimeListTile(_animeList.data![index]),
-          )),
+      itemBuilder: (context, index) => AnimeListTile(
+        _animeList.data![index],
+        key: ValueKey(_animeList.data![index].malId ?? 0),
+      ),
     );
   }
 }

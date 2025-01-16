@@ -102,8 +102,3 @@ enum AnimeOrderBy {
     }
   }
 }
-
-enum AnimeFeedStyle {
-  grid,
-  row;
-}

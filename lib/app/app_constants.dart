@@ -4,15 +4,16 @@ class AppConstants {
   AppConstants._();
 
   static const ColorScheme lightScheme = ColorScheme(
-      brightness: Brightness.light,
-      primary: Color(0xFF0072BB),
-      onPrimary: Colors.white,
-      secondary: Colors.white,
-      onSecondary: Colors.blueGrey,
-      error: Color(0xFFB00020),
-      onError: Colors.white,
-      surface: Colors.white,
-      onSurface: Colors.black);
+    brightness: Brightness.light,
+    primary: Color(0xFF0072BB),
+    onPrimary: Colors.white,
+    secondary: Colors.blueGrey,
+    error: Color(0xFFB00020),
+    onError: Colors.white,
+    surface: Colors.white,
+    onSurface: Colors.black,
+    onSecondary: Colors.white,
+  );
 
   static const darkScheme = ColorScheme(
       brightness: Brightness.dark,
@@ -29,8 +30,10 @@ class AppConstants {
     colorScheme: lightScheme,
     scaffoldBackgroundColor: Colors.grey.shade100,
   );
-  static ThemeData darkTheme = ThemeData(colorScheme: darkScheme, scaffoldBackgroundColor: const Color(0xFF272727
-  ));
+  static ThemeData darkTheme = ThemeData(
+    colorScheme: darkScheme,
+    scaffoldBackgroundColor: const Color(0xFF282828),
+  );
 
   static const themeKey = "theme_mode";
   static const animeFeedStyleKey = "anime_feed_mode";

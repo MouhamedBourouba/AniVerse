@@ -3,11 +3,9 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:result_dart/result_dart.dart';
 
-import '../../app/enums.dart';
 import '../../data/models/anime_list.dart';
 import '../../domain/repository/anime_repository.dart';
 import '../provider/settings_provider.dart';
-import '../widgets/anime_grid_view.dart';
 import '../widgets/anime_list_view.dart';
 
 class AnimeFeedPage extends StatefulWidget {
@@ -28,7 +26,6 @@ class _AnimeFeedPageState extends State<AnimeFeedPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isRow = context.watch<SettingsProvider>().getAnimeFeedStyle() == AnimeFeedStyle.row;
     final isLightTheme = context.watch<SettingsProvider>().getThemeMode() == ThemeMode.dark;
 
     return Scaffold(
@@ -44,11 +41,6 @@ class _AnimeFeedPageState extends State<AnimeFeedPage> {
             tooltip: "Open Search Screen",
           ),
           IconButton(
-            onPressed: () => context.read<SettingsProvider>().toggleAnimeFeedStyle(),
-            icon: Icon(isRow ? Icons.table_rows_rounded : Icons.grid_view_rounded),
-            tooltip: "Switch Anime Display Style",
-          ),
-          IconButton(
             onPressed: () => context.read<SettingsProvider>().toggleTheme(),
             icon: Icon(isLightTheme ? Icons.dark_mode : Icons.light_mode),
             tooltip: "Switch Theme",
@@ -62,7 +54,7 @@ class _AnimeFeedPageState extends State<AnimeFeedPage> {
               return const Center(child: CircularProgressIndicator());
             } else {
               return snap.data!.fold(
-                (data) => isRow ? AnimeListView(data) : AnimeGridView(data),
+                (data) => AnimeListView(data),
                 // TODO: better error messages
                 (error) => const Center(child: Text("error")),
               );

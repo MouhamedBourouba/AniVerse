@@ -2,32 +2,11 @@ import 'package:ani_verse/app/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../app/enums.dart';
-
 class SettingsProvider extends ChangeNotifier {
   final SharedPreferences _sp;
   ThemeMode? _tm;
-  AnimeFeedStyle? _animeFeedStyle;
 
   SettingsProvider(this._sp);
-
-  AnimeFeedStyle getAnimeFeedStyle() {
-    if (_animeFeedStyle == null) {
-      final animeFeed = _intToAnimeFeed(_sp.getInt(AppConstants.animeFeedStyleKey) ?? 0);
-      _animeFeedStyle = animeFeed;
-    }
-    return _animeFeedStyle!;
-  }
-
-  void toggleAnimeFeedStyle() {
-    final newStyle =
-        getAnimeFeedStyle() == AnimeFeedStyle.row ? AnimeFeedStyle.grid : AnimeFeedStyle.row;
-
-    _sp.setInt(AppConstants.animeFeedStyleKey, _animeFeedToInt(newStyle));
-    _animeFeedStyle = newStyle;
-
-    notifyListeners();
-  }
 
   void toggleTheme() {
     _setThemeMode(_tm! == ThemeMode.light ? ThemeMode.dark : ThemeMode.light);
@@ -46,26 +25,6 @@ class SettingsProvider extends ChangeNotifier {
     _sp.setInt("theme_mode", _themeModeToInt(tm));
     _tm = tm;
     notifyListeners();
-  }
-}
-
-AnimeFeedStyle _intToAnimeFeed(int v) {
-  switch (v) {
-    case 0:
-      return AnimeFeedStyle.grid;
-    case 1:
-      return AnimeFeedStyle.row;
-    default:
-      return AnimeFeedStyle.grid;
-  }
-}
-
-int _animeFeedToInt(AnimeFeedStyle tm) {
-  switch (tm) {
-    case AnimeFeedStyle.row:
-      return 0;
-    case AnimeFeedStyle.grid:
-      return 1;
   }
 }
 
