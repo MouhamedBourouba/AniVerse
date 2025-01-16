@@ -32,7 +32,7 @@ class AppConstants {
   );
   static ThemeData darkTheme = ThemeData(
     colorScheme: darkScheme,
-    scaffoldBackgroundColor: const Color(0xFF282828),
+    scaffoldBackgroundColor: const Color(0xFF383838),
   );
 
   static const themeKey = "theme_mode";

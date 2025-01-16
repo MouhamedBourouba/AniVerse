@@ -19,9 +19,12 @@ class AnimeListTile extends StatelessWidget {
         children: [
           imageUrl != null
               ? Expanded(
-                  flex: 2,
+                  flex: 1,
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(12),
+                      bottomLeft: Radius.circular(12),
+                    ),
                     child: Stack(
                       children: [
                         Image.network(
@@ -71,7 +74,7 @@ class AnimeListTile extends StatelessWidget {
                 ),
           const SizedBox(width: 8),
           Expanded(
-            flex: 3,
+            flex: 2,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -88,6 +91,20 @@ class AnimeListTile extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
+                        "Rating: ${animeInfo.score ?? "N/A"}",
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelMedium
+                            ?.copyWith(color: Theme.of(context).colorScheme.secondary),
+                      ),
+                      Text(
+                        "${animeInfo.type ?? "N/A"} * ${animeInfo.duration?.replaceAll(" per ep", "") ?? "N/A"}",
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelMedium
+                            ?.copyWith(color: Theme.of(context).colorScheme.secondary),
+                      ),
+                      Text(
                         "Status: ${animeInfo.status ?? ""}",
                         style: Theme.of(context)
                             .textTheme
@@ -95,21 +112,7 @@ class AnimeListTile extends StatelessWidget {
                             ?.copyWith(color: Theme.of(context).colorScheme.secondary),
                       ),
                       Text(
-                        "Type: ${animeInfo.type ?? "N/A"}",
-                        style: Theme.of(context)
-                            .textTheme
-                            .labelMedium
-                            ?.copyWith(color: Theme.of(context).colorScheme.secondary),
-                      ),
-                      Text(
                         "Source: ${animeInfo.source ?? "N/A"}",
-                        style: Theme.of(context)
-                            .textTheme
-                            .labelMedium
-                            ?.copyWith(color: Theme.of(context).colorScheme.secondary),
-                      ),
-                      Text(
-                        "Rating: ${animeInfo.score ?? "N/A"}",
                         style: Theme.of(context)
                             .textTheme
                             .labelMedium
@@ -148,7 +151,8 @@ class AnimeListTile extends StatelessWidget {
                 const SizedBox(height: 8)
               ],
             ),
-          )
+          ),
+          const SizedBox(width: 4)
         ],
       ),
     );
