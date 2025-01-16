@@ -13,9 +13,9 @@ class AnimeListView extends StatelessWidget {
     return ListView.builder(
       itemCount: _animeList.data?.length ?? 0,
       itemBuilder: (context, index) => SizedBox(
-          height: 200,
+          height: 260,
           child: Padding(
-            padding: const EdgeInsets.all(4.0),
+            padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 16),
             child: AnimeListTile(_animeList.data![index]),
           )),
     );

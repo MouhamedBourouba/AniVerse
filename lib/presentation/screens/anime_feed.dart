@@ -29,6 +29,7 @@ class _AnimeFeedPageState extends State<AnimeFeedPage> {
   @override
   Widget build(BuildContext context) {
     final isRow = context.watch<SettingsProvider>().getAnimeFeedStyle() == AnimeFeedStyle.row;
+    final isLightTheme = context.watch<SettingsProvider>().getThemeMode() == ThemeMode.dark;
 
     return Scaffold(
       drawer: const Drawer(
@@ -46,6 +47,11 @@ class _AnimeFeedPageState extends State<AnimeFeedPage> {
             onPressed: () => context.read<SettingsProvider>().toggleAnimeFeedStyle(),
             icon: Icon(isRow ? Icons.table_rows_rounded : Icons.grid_view_rounded),
             tooltip: "Switch Anime Display Style",
+          ),
+          IconButton(
+            onPressed: () => context.read<SettingsProvider>().toggleTheme(),
+            icon: Icon(isLightTheme ? Icons.dark_mode : Icons.light_mode),
+            tooltip: "Switch Theme",
           )
         ],
       ),

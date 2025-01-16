@@ -29,6 +29,11 @@ class SettingsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void toggleTheme() {
+    _setThemeMode(_tm! == ThemeMode.light ? ThemeMode.dark : ThemeMode.light);
+    notifyListeners();
+  }
+
   ThemeMode getThemeMode() {
     if (_tm == null) {
       final themeMode = _intToThemeMode(_sp.getInt(AppConstants.themeKey) ?? 0);
@@ -37,7 +42,7 @@ class SettingsProvider extends ChangeNotifier {
     return _tm!;
   }
 
-  void setThemeMode(ThemeMode tm) {
+  void _setThemeMode(ThemeMode tm) {
     _sp.setInt("theme_mode", _themeModeToInt(tm));
     _tm = tm;
     notifyListeners();

@@ -2,12 +2,14 @@ import 'package:ani_verse/data/models/anime_info.dart';
 import 'package:flutter/material.dart';
 
 class AnimeCard extends StatelessWidget {
-  final AnimeInfo animeInfo;
+  final AnimeInfo _animeInfo;
 
-  const AnimeCard(this.animeInfo, {super.key});
+  const AnimeCard(this._animeInfo, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return ListTile(
+      title: Text(_animeInfo.title ?? ""),
+    );
   }
 }
