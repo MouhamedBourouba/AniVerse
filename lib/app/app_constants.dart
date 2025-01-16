@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppConstants {
   AppConstants._();
@@ -29,10 +30,15 @@ class AppConstants {
   static ThemeData lightTheme = ThemeData(
     colorScheme: lightScheme,
     scaffoldBackgroundColor: Colors.grey.shade100,
+    textTheme: GoogleFonts.robotoTextTheme(),
   );
   static ThemeData darkTheme = ThemeData(
     colorScheme: darkScheme,
     scaffoldBackgroundColor: const Color(0xFF383838),
+    textTheme: GoogleFonts.robotoTextTheme().apply(
+      bodyColor: Colors.white,
+      displayColor: Colors.white,
+    ),
   );
 
   static const themeKey = "theme_mode";
