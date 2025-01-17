@@ -1,5 +1,6 @@
 import 'package:ani_verse/data/repository/anime_repository.dart';
 import 'package:ani_verse/domain/repository/anime_repository.dart';
+import 'package:ani_verse/presentation/provider/anime_provider.dart';
 import 'package:ani_verse/presentation/provider/color_provider.dart';
 import 'package:ani_verse/presentation/provider/settings_provider.dart';
 import 'package:get_it/get_it.dart';
@@ -14,5 +15,6 @@ Future<void> configureDeps() async {
   gI.registerSingleton<AnimeRepository>(AnimeRepositoryImpl());
 
   gI.registerFactory(() => SettingsProvider(gI.get()));
+  gI.registerFactory(() => AnimeProvider(gI.get()));
   gI.registerFactory(() => ColorProvider());
 }

@@ -6,7 +6,7 @@ import 'package:result_dart/result_dart.dart';
 import '../../app/enums.dart';
 
 abstract class AnimeRepository {
-  Future<Result<AnimeList>> getCurrentAnimeSeason([int? page, bool? forceOnline]);
+  Future<Result<AnimeList>> getCurrentAnimeSeason([int? page]);
   Future<Result<AnimeList>> getAnimeSeason(int year, AnimeSeason animeSeason, [int? page]);
   Future<Result<AnimeInfo>> getAnimeById(int id);
   Future<Result<AnimeRecommendations>> getAnimeRecommendations(int id);

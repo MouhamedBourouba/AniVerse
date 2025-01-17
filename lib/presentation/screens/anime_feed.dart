@@ -1,12 +1,11 @@
+import 'package:ani_verse/app/enums.dart';
+import 'package:ani_verse/presentation/provider/anime_provider.dart';
+import 'package:ani_verse/presentation/widgets/adaptive_anime_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:result_dart/result_dart.dart';
 
-import '../../data/models/anime_list.dart';
-import '../../domain/repository/anime_repository.dart';
 import '../provider/settings_provider.dart';
-import '../widgets/anime_list_view.dart';
 
 class AnimeFeedPage extends StatefulWidget {
   const AnimeFeedPage({super.key});
@@ -16,17 +15,16 @@ class AnimeFeedPage extends StatefulWidget {
 }
 
 class _AnimeFeedPageState extends State<AnimeFeedPage> {
-  late final Future<Result<AnimeList>> _getCurrentAnimeSession;
-
   @override
   void initState() {
-    _getCurrentAnimeSession = context.read<AnimeRepository>().getCurrentAnimeSeason();
     super.initState();
+    context.read<AnimeProvider>().fetchCurrentAnimeData();
   }
 
   @override
   Widget build(BuildContext context) {
     final isLightTheme = context.watch<SettingsProvider>().getThemeMode() == ThemeMode.dark;
+    final isRow = context.watch<SettingsProvider>().getAnimeFeedStyle() == AnimeFeedStyle.row;
 
     return Scaffold(
       drawer: const Drawer(
@@ -41,25 +39,39 @@ class _AnimeFeedPageState extends State<AnimeFeedPage> {
             tooltip: "Open Search Screen",
           ),
           IconButton(
+            onPressed: () => context.read<SettingsProvider>().toggleAnimeFeedStyle(),
+            icon: Icon(isRow ? Icons.table_rows_outlined : Icons.grid_view),
+            tooltip: "Switch Anime Display",
+          ),
+          IconButton(
             onPressed: () => context.read<SettingsProvider>().toggleTheme(),
             icon: Icon(isLightTheme ? Icons.dark_mode : Icons.light_mode),
             tooltip: "Switch Theme",
           )
         ],
       ),
-      body: FutureBuilder(
-          future: _getCurrentAnimeSession,
-          builder: (context, snap) {
-            if (snap.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            } else {
-              return snap.data!.fold(
-                (data) => AnimeListView(data),
-                // TODO: better error messages
-                (error) => const Center(child: Text("error")),
-              );
-            }
-          }),
+      body: Consumer<AnimeProvider>(
+        builder: (BuildContext context, AnimeProvider provider, _) {
+          if (provider.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (provider.isError) {
+            return Center(child: Text(provider.errorMessage ?? ""));
+          } else {
+            return Padding(
+              padding: const EdgeInsets.all(12),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 1700),
+                  child: AdaptiveAnimeView(
+                    provider.animeData ?? [],
+                    onMaxScrollReach: provider.fetchMoreAnime,
+                  ),
+                ),
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 }

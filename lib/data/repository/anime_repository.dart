@@ -69,8 +69,8 @@ class AnimeRepositoryImpl implements AnimeRepository {
   }
 
   @override
-  Future<Result<AnimeList>> getCurrentAnimeSeason([int? page, bool? forceOnline]) {
-    return JikanApi.request("seasons/now", {"page": page ?? "1", "sfw": ""})
+  Future<Result<AnimeList>> getCurrentAnimeSeason([int? page]) {
+    return JikanApi.request("seasons/now", {"page": (page ?? 1).toString(), "sfw": ""})
         .then<Result<AnimeList>>((body) {
       return body.fold((data) => AnimeList.fromJson(jsonDecode(data)).toSuccess(), (error) => error.toFailure());
     });

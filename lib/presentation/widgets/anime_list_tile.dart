@@ -14,7 +14,6 @@ class AnimeListTile extends StatelessWidget {
     Color thisColor = context.read<ColorProvider>().getRandomColor(key!);
 
     return Card(
-      elevation: 5,
       child: Row(
         children: [
           imageUrl != null
