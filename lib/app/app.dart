@@ -4,8 +4,8 @@ import 'package:ani_verse/app/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-
 import '../presentation/provider/settings_provider.dart';
+
 class AniVerse extends StatelessWidget {
   const AniVerse({super.key});
 

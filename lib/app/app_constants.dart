@@ -6,7 +6,7 @@ class AppConstants {
 
   static const ColorScheme lightScheme = ColorScheme(
     brightness: Brightness.light,
-    primary: Color(0xFF0072BB),
+    primary: Colors.white70,
     onPrimary: Colors.white,
     secondary: Colors.blueAccent,
     error: Color(0xFFB00020),
@@ -20,7 +20,6 @@ class AppConstants {
       brightness: Brightness.dark,
       primary: Color(0xFF004C8C),
       onPrimary: Colors.white,
-      //secondary: Color(0xFF03DAC6),
       secondary: Colors.lightBlueAccent,
       onSecondary: Color(0xFF03DAC6),
       error: Color(0xFFCF6679),
@@ -31,15 +30,26 @@ class AppConstants {
   static ThemeData lightTheme = ThemeData(
     colorScheme: lightScheme,
     scaffoldBackgroundColor: Colors.grey.shade100,
+    textSelectionTheme: const TextSelectionThemeData(
+      cursorColor: Colors.blue,
+      selectionColor: Colors.blue,
+    ),
     textTheme: GoogleFonts.robotoTextTheme(),
+    platform: TargetPlatform.iOS,
   );
+
   static ThemeData darkTheme = ThemeData(
     colorScheme: darkScheme,
     scaffoldBackgroundColor: const Color(0xFF383838),
+    textSelectionTheme: const TextSelectionThemeData(
+      cursorColor: Colors.white,
+      selectionColor: Colors.blue,
+    ),
     textTheme: GoogleFonts.robotoTextTheme().apply(
       bodyColor: Colors.white,
       displayColor: Colors.white,
     ),
+    platform: TargetPlatform.iOS,
   );
 
   static const themeKey = "theme_mode";

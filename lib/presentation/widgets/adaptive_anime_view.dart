@@ -11,17 +11,25 @@ class AdaptiveAnimeView extends StatelessWidget {
   final List<AnimeInfo> _animeList;
   final void Function() onMaxScrollReach;
 
-  const AdaptiveAnimeView(this._animeList, {super.key, required this.onMaxScrollReach});
+  const AdaptiveAnimeView(
+    this._animeList, {
+    super.key,
+    required this.onMaxScrollReach,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Consumer<SettingsProvider>(
-      builder: (context, value, child) => value.getAnimeFeedStyle() == AnimeFeedStyle.row
-          ? AnimeListView(_animeList)
-          : AnimeGridView(
-              _animeList,
-              onMaxScrollReach: onMaxScrollReach,
-            ),
+      builder: (context, value, child) =>
+          value.getAnimeFeedStyle() == AnimeFeedStyle.row
+              ? AnimeListView(
+                  _animeList,
+                  onMaxScrollReach: onMaxScrollReach,
+                )
+              : AnimeGridView(
+                  _animeList,
+                  onMaxScrollReach: onMaxScrollReach,
+                ),
     );
   }
 }
